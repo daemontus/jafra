@@ -20,6 +20,12 @@ public abstract class IdTokenMessenger implements TokenMessenger {
     private final int predecessor;
 
     public IdTokenMessenger(int myId, int processCount) {
+        if (processCount < 1) {
+            throw new IllegalArgumentException("Process count must be at least 1");
+        }
+        if (myId < 0) {
+            throw new IllegalArgumentException("Process ID must be non negative.");
+        }
         this.myId = myId;
         this.processCount = processCount;
         successor = (myId + 1) % processCount;

@@ -1,13 +1,15 @@
-apply plugin: 'java'
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-sourceCompatibility = 1.7
-version = '1.0'
-
-repositories {
-    mavenCentral()
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+    }
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile 'com.intellij:annotations:5.1'
+allprojects {
+    repositories {
+        jcenter()
+    }
 }
