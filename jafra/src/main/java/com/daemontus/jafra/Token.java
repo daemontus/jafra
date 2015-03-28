@@ -1,4 +1,4 @@
-package daemontus.jafra;
+package com.daemontus.jafra;
 
 /**
  * Represents one instance of a token passed during termination detection.

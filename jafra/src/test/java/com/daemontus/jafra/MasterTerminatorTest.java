@@ -1,4 +1,4 @@
-package daemontus.jafra;
+package com.daemontus.jafra;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.Rule;

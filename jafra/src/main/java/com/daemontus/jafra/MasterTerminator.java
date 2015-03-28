@@ -1,6 +1,8 @@
-package daemontus.jafra;
+package com.daemontus.jafra;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.lang.*;
 
 /**
  * Terminator running on a master machine.
