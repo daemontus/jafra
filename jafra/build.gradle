@@ -1,8 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'kotlin'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
-sourceCompatibility = 1.7
-version = '1.0'
+sourceCompatibility = 1.6
 
 repositories {
     mavenCentral()
@@ -26,4 +27,71 @@ buildscript {
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
     test.java.srcDirs += 'src/test/kotlin'
+}
+
+group = "com.github.daemontus"
+archivesBaseName = "jafra"
+version = "1.0.0"
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Jafra'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'Implementation of safra\'s termination detection algorithm for Java and Kotlin'
+                url 'https://github.com/daemontus/jafra'
+
+                scm {
+                    connection 'scm:svn:http://foo.googlecode.com/svn/trunk/'
+                    developerConnection 'scm:svn:https://foo.googlecode.com/svn/trunk/'
+                    url 'http://foo.googlecode.com/svn/trunk/'
+                }
+
+                licenses {
+                    license {
+                        name 'The MIT License (MIT)'
+                        url 'http://opensource.org/licenses/MIT'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'daemontus'
+                        name 'Samuel Pastva'
+                        email 'daemontus@gmail.com'
+                    }
+                }
+            }
+        }
+    }
 }
