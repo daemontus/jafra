@@ -1,20 +1,18 @@
 package com.github.daemontus.jafra
 
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.ExpectedException
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
-import kotlin.test.failsWith
 
 open class MockMasterMessenger : TokenMessenger {
 
     var mc: Int = 0
     val queue: BlockingQueue<Token> = LinkedBlockingQueue<Token>()
 
-    synchronized
+    @Synchronized
     override fun sendToNextAsync(token: Token) {
         mc += 1
         queue.add(token)
@@ -28,7 +26,7 @@ open class MockMasterMessenger : TokenMessenger {
 
 class MasterTerminatorTest {
 
-    Test(timeout = 2000)
+    @Test(timeout = 2000)
     fun complexTest() {
         var flag = 1
         var count = 0
@@ -76,7 +74,7 @@ class MasterTerminatorTest {
         assertTrue(comm.mc > 2) //this can cycle for quite a long time, so we just know it's going to be a big number
     }
 
-    Test(timeout = 1000)
+    @Test(timeout = 1000)
     fun receivedMessagesAfterStart() {
         var flag = 1
 
@@ -116,7 +114,7 @@ class MasterTerminatorTest {
         assertEquals(2, comm.mc)
     }
 
-    Test(timeout = 1000)
+    @Test(timeout = 1000)
     fun sentMessagesAfterStart() {
         var flag = 1
 
@@ -156,7 +154,7 @@ class MasterTerminatorTest {
 
     }
 
-    Test(timeout = 1000)
+    @Test(timeout = 1000)
     fun receiveMessagesBeforeDone() {
         //we don't need to simulate flags here, since message send does not modify environment flags
         val comm = object : MockMasterMessenger() {
@@ -199,7 +197,7 @@ class MasterTerminatorTest {
         assertTrue(comm.queue.isEmpty())
     }
 
-    Test(timeout = 1000)
+    @Test(timeout = 1000)
     fun sendMessagesBeforeDone() {
 
         val comm = object : MockMasterMessenger() {
@@ -234,7 +232,7 @@ class MasterTerminatorTest {
 
     }
 
-    Test(timeout = 1000)
+    @Test(timeout = 1000)
     fun wrongUse() {
 
         val comm = MockMasterMessenger()
@@ -244,11 +242,11 @@ class MasterTerminatorTest {
 
          //terminator not working
 
-        failsWith(javaClass<IllegalStateException>()) {
+        assertFailsWith(IllegalStateException::class) {
             terminator.setDone()
         }
 
-        failsWith(javaClass<IllegalStateException>()) {
+        assertFailsWith(IllegalStateException::class) {
             terminator.messageSent()
         }
 
@@ -256,25 +254,25 @@ class MasterTerminatorTest {
 
         //terminator finalized
 
-        failsWith(javaClass<IllegalStateException>()) {
+        assertFailsWith(IllegalStateException::class) {
             terminator.setDone()
         }
 
-        failsWith(javaClass<IllegalStateException>()) {
+        assertFailsWith(IllegalStateException::class) {
             terminator.messageSent()
         }
 
-        failsWith(javaClass<IllegalStateException>()) {
+        assertFailsWith(IllegalStateException::class) {
             terminator.messageReceived()
         }
 
-        failsWith(javaClass<IllegalStateException>()) {
+        assertFailsWith(IllegalStateException::class) {
             terminator.waitForTermination()
         }
 
     }
 
-    Test(timeout = 1000)
+    @Test(timeout = 1000)
     fun noMessages() {
 
         //In case there are no other messages, terminator should finish after first onDone call

@@ -1,7 +1,7 @@
 package com.github.daemontus.jafra
 
 import org.junit.Test
-import kotlin.test.failsWith
+import kotlin.test.assertFailsWith
 
 abstract class MockSlaveMessenger : TokenMessenger {
 
@@ -11,19 +11,19 @@ abstract class MockSlaveMessenger : TokenMessenger {
 
 class SlaveTerminatorTest {
 
-    Test
+    @Test
     public fun manyForwardsMessagesReceivedAfter() {
         var flag = 0
         val messenger = object : MockSlaveMessenger() {
 
-            synchronized
+            @Synchronized
             override fun sendToNextAsync(token: Token) {
                 if (flag == 1 && token.count == -2) {
                     flag = 2
                 }
             }
 
-            synchronized
+            @Synchronized
             override fun receiveFromPrevious(): Token {
                 if (flag == 2) {
                     return Token(2, 0)
@@ -48,12 +48,12 @@ class SlaveTerminatorTest {
     }
 
 
-    Test
+    @Test
     public fun manyForwardsMessagesSentAfter() {
         var flag = 0
         val messenger = object : MockSlaveMessenger() {
 
-            synchronized
+            @Synchronized
             override fun sendToNextAsync(token: Token) {
                 if (    (flag != 2 && token.flag == 2) || //terminates too soon
                         (flag == 2 && token.flag != 2 && token.count != 2) || //count decreased
@@ -66,7 +66,7 @@ class SlaveTerminatorTest {
                 }
             }
 
-            synchronized
+            @Synchronized
             override fun receiveFromPrevious(): Token {
                 if (flag == 2) {
                     return Token(2, 0)
@@ -89,13 +89,13 @@ class SlaveTerminatorTest {
         terminator.waitForTermination()
     }
 
-    Test
+    @Test
     public fun oneForwardMessagesSentAndReceivedBefore() {
         val messenger = object : MockSlaveMessenger() {
 
             var counter = 0
 
-            synchronized
+            @Synchronized
             override fun sendToNextAsync(token: Token) {
                 when (counter) {
                     0 -> throw UnsupportedOperationException("Sending token but nothing has been received")
@@ -118,7 +118,7 @@ class SlaveTerminatorTest {
                 counter++
             }
 
-            synchronized
+            @Synchronized
             override fun receiveFromPrevious(): Token {
                 when (counter) {
                     0 -> {
@@ -144,11 +144,11 @@ class SlaveTerminatorTest {
         terminator.waitForTermination()
     }
 
-    Test
+    @Test
     public fun oneForwardMessagesReceivedBefore() {
         val messenger = object : MockSlaveMessenger() {
 
-            synchronized
+            @Synchronized
             override fun sendToNextAsync(token: Token) {
                 when (counter) {
                     0 -> throw UnsupportedOperationException("Sending token but nothing has been received")
@@ -162,7 +162,7 @@ class SlaveTerminatorTest {
                 counter++
             }
 
-            synchronized
+            @Synchronized
             override fun receiveFromPrevious(): Token {
                 when (counter) {
                     0 -> {
@@ -187,11 +187,11 @@ class SlaveTerminatorTest {
         terminator.waitForTermination()
     }
 
-    Test
+    @Test
     public fun oneForwardMessagesSentBefore() {
         val messenger = object : MockSlaveMessenger() {
 
-            synchronized
+            @Synchronized
             override fun sendToNextAsync(token: Token) {
                 when (counter) {
                     0 -> throw UnsupportedOperationException("Sending token but nothing has been received")
@@ -205,7 +205,7 @@ class SlaveTerminatorTest {
                 counter++
             }
 
-            synchronized
+            @Synchronized
             override fun receiveFromPrevious(): Token {
                 when (counter) {
                     0 -> {
@@ -230,11 +230,11 @@ class SlaveTerminatorTest {
         terminator.waitForTermination()
     }
 
-    Test
+    @Test
     public fun oneForwardNoMessages() {
         val messenger = object : MockSlaveMessenger() {
 
-            synchronized
+            @Synchronized
             override fun sendToNextAsync(token: Token) {
                 when (counter) {
                     0 -> throw UnsupportedOperationException("Sending token but nothing has been received")
@@ -248,7 +248,7 @@ class SlaveTerminatorTest {
                 counter++
             }
 
-            synchronized
+            @Synchronized
             override fun receiveFromPrevious(): Token {
                 when (counter) {
                     0 -> {
@@ -271,7 +271,7 @@ class SlaveTerminatorTest {
         terminator.waitForTermination()
     }
 
-    Test(timeout = 1000)
+    @Test(timeout = 1000)
     fun wrongUse() {
 
         val comm = object : TokenMessenger {
@@ -290,26 +290,26 @@ class SlaveTerminatorTest {
         val terminator = Terminator.createNew(comm)
         terminator.setDone()
 
-        failsWith(javaClass<IllegalStateException>()) {
+        assertFailsWith(IllegalStateException::class) {
             terminator.messageSent()
         }
 
-        failsWith(javaClass<IllegalStateException>()) {
+        assertFailsWith(IllegalStateException::class) {
             terminator.setDone()
         }
 
         terminator.waitForTermination()
 
-        failsWith(javaClass<IllegalStateException>()) {
+        assertFailsWith(IllegalStateException::class) {
             terminator.messageSent()
         }
-        failsWith(javaClass<IllegalStateException>()) {
+        assertFailsWith(IllegalStateException::class) {
             terminator.messageReceived()
         }
-        failsWith(javaClass<IllegalStateException>()) {
+        assertFailsWith(IllegalStateException::class) {
             terminator.setDone()
         }
-        failsWith(javaClass<IllegalStateException>()) {
+        assertFailsWith(IllegalStateException::class) {
             terminator.waitForTermination()
         }
     }

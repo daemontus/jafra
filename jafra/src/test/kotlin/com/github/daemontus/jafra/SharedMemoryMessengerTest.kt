@@ -6,7 +6,7 @@ import kotlin.test.assertEquals
 class MessengerTest {
 
 
-    Test fun simple() {
+    @Test fun simple() {
 
         val messengers = SharedMemoryMessengers(3).messengers
 

@@ -1,7 +1,6 @@
 package com.github.daemontus.jafra
 
 import org.junit.Test
-import java.util.*
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 import kotlin.test.assertFalse
@@ -17,14 +16,14 @@ class Messenger(id: Int, count: Int, val tokenQueues: List<BlockingQueue<Token>>
 
 class RandomTest {
 
-    Test fun t1() = test(2, 600, false)
-    Test fun t2() = test(2, 200, true)
-    Test fun t3() = test(10, 200, true)
-    Test fun t4() = test(10, 1000, false)
-    Test fun t5() = test(2, 10, true)
-    Test fun t6() = test(2, 10, false)
-    Test fun t7() = test(10, 20, true)
-    Test fun t8() = test(10, 20, false)
+    @Test fun t1() = test(2, 600, false)
+    @Test fun t2() = test(2, 200, true)
+    @Test fun t3() = test(10, 200, true)
+    @Test fun t4() = test(10, 1000, false)
+    @Test fun t5() = test(2, 10, true)
+    @Test fun t6() = test(2, 10, false)
+    @Test fun t7() = test(10, 20, true)
+    @Test fun t8() = test(10, 20, false)
 
 
     private fun test(agents: Int, messages: Int, sleep: Boolean) {
@@ -58,7 +57,7 @@ class Worker(
 
     val terminator = Terminator.createNew(messenger)
 
-    volatile var mainTaskDone = false
+    @Volatile var mainTaskDone = false
 
     val reader = Thread() {
         //receives messages until poison pill comes

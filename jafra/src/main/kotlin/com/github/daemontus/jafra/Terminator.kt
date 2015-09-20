@@ -32,7 +32,7 @@ constructor(protected val messenger: TokenMessenger) {
     /**
      * Tell terminator that local work is done and he can resume operations. (i.e. after message has been received and processed)
      */
-    synchronized open public fun setDone() {
+    @Synchronized open public fun setDone() {
         throwIfFinalized()
         throwIfNotWorking()
         working = false
@@ -41,7 +41,7 @@ constructor(protected val messenger: TokenMessenger) {
     /**
      * Indicate that message has been sent from this process.
      */
-    synchronized public fun messageSent() {
+    @Synchronized public fun messageSent() {
         throwIfFinalized()
         throwIfNotWorking()
         count++
@@ -52,7 +52,7 @@ constructor(protected val messenger: TokenMessenger) {
      * WARNING: In order for terminator to properly finish, any sequence of
      * messageReceived calls must end with at least one setDone call.
      */
-    synchronized public fun messageReceived() {
+    @Synchronized public fun messageReceived() {
         throwIfFinalized()
         count--
         //status = Black
@@ -119,7 +119,7 @@ private class SlaveTerminator(m: TokenMessenger) : Terminator(m) {
 
     private var pendingToken: Token? = null
 
-    synchronized
+    @Synchronized
     private fun processToken(token: Token?) {
         //working is false here
         if (token != null) { //node is idle and has unprocessed tokens
@@ -149,7 +149,7 @@ private class SlaveTerminator(m: TokenMessenger) : Terminator(m) {
         messenger.sendToNextAsync(token)
     }
 
-    synchronized
+    @Synchronized
     override fun setDone() {
         super.setDone()
         processToken(pendingToken)
