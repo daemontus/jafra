@@ -102,7 +102,7 @@ constructor(protected val messenger: TokenMessenger) {
      * (Great for multi-round algorithms, where each round uses
      * same messenger, but new terminator.)
      */
-    public class TerminatorFactory(private val messenger: TokenMessenger) {
+    public class Factory(private val messenger: TokenMessenger) {
 
         public fun createNew(): Terminator {
             return Terminator.createNew(messenger)
