@@ -30,7 +30,7 @@ sourceSets {
 
 group = "com.github.daemontus"
 archivesBaseName = "jafra"
-version = "1.0.4"
+version = "1.0.5"
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
