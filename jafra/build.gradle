@@ -15,7 +15,7 @@ dependencies {
 }
 
 buildscript {
-    ext.kotlin_version = '0.13.1514'
+    ext.kotlin_version = '0.14.451'
     repositories {
         mavenCentral()
     }
@@ -30,7 +30,7 @@ sourceSets {
 
 group = "com.github.daemontus"
 archivesBaseName = "jafra"
-version = "1.0.3"
+version = "1.0.4"
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
