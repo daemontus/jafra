@@ -76,8 +76,8 @@ constructor(protected val messenger: TokenMessenger) {
      */
     protected abstract fun terminationLoop()
 
-    private fun throwIfFinalized(): Unit = if (finalized) throw IllegalStateException("This terminator has been already finalized.")
-    private fun throwIfNotWorking(): Unit = if (!working) throw IllegalStateException("This terminator is not working.")
+    private fun throwIfFinalized(): Unit = if (finalized) throw IllegalStateException("This terminator has been already finalized.") else {}
+    private fun throwIfNotWorking(): Unit = if (!working) throw IllegalStateException("This terminator is not working.") else {}
 
     companion object {
 
