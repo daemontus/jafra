@@ -3,6 +3,9 @@ Implementation of Safra's algorithm [[pdf]](http://fmt.cs.utwente.nl/courses/cdp
 
 Assumes fixed number of ordered processes communicating over realiable, order preserving channels. (MPI, Ethernet, shared memory, blocking queues...)
 
+###How to get it
+The repo is jitpack-compatibile, so all you have to do is look up the latest version on jitpack and then integrate it into your favorite build system: [Jafra on Jitpack](https://jitpack.io/#daemontus/jafra)
+
 ## How to use
  - Extend [IdTokenMessenger](https://github.com/daemontus/jafra/blob/master/jafra/src/main/java/com/daemontus/jafra/IdTokenMessenger.java) or directly implement [TokenMessenger](https://github.com/daemontus/jafra/blob/master/jafra/src/main/java/com/daemontus/jafra/TokenMessenger.java).
  - Use [static factory](https://github.com/daemontus/jafra/blob/master/jafra/src/main/java/com/daemontus/jafra/Terminator.java#L36) to create a terminator in each process.
