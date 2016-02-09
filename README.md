@@ -13,13 +13,14 @@ Assumes fixed number of ordered processes communicating over realiable, order pr
 The repo is jitpack-compatibile, so all you have to do is look up the latest version on jitpack and then integrate it into your favorite build system: [Jafra on Jitpack](https://jitpack.io/#daemontus/jafra)
 
 ## How to use
- - Extend [IdTokenMessenger](https://github.com/daemontus/jafra/blob/master/jafra/src/main/java/com/daemontus/jafra/IdTokenMessenger.java) or directly implement [TokenMessenger](https://github.com/daemontus/jafra/blob/master/jafra/src/main/java/com/daemontus/jafra/TokenMessenger.java).
- - Use [static factory](https://github.com/daemontus/jafra/blob/master/jafra/src/main/java/com/daemontus/jafra/Terminator.java#L36) to create a terminator in each process.
+ - Extend [IdTokenMessenger](https://github.com/daemontus/jafra/blob/master/src/main/kotlin/com/github/daemontus/jafra/TokenMessenger.kt) or directly implement [TokenMessenger](https://github.com/daemontus/jafra/blob/master/src/main/kotlin/com/github/daemontus/jafra/TokenMessenger.kt).
+ - Use [Factory or static constructor](https://github.com/daemontus/jafra/blob/master/src/main/kotlin/com/github/daemontus/jafra/Terminator.kt#L90) to create a terminator in each process.
  - Each time a message is received or sent from process, notify terminator. (These are work-initiating/load-balancing messages. Not every data packet is considered to be a message, see safra's algorithm for more info)
- - When all work is done, call [setDone](https://github.com/daemontus/jafra/blob/master/jafra/src/main/java/com/daemontus/jafra/Terminator.java#L72) on terminator to mark process as idle.
- - Use blocking [waitForTermination](https://github.com/daemontus/jafra/blob/master/jafra/src/main/java/com/daemontus/jafra/Terminator.java#L104) call to actually wait for termination. When this method returns, all processes are guaranteed to be idle (but some of them may be still waiting for this method to return).
+ - When all work is done, call [setDone](https://github.com/daemontus/jafra/blob/master/src/main/kotlin/com/github/daemontus/jafra/Terminator.kt#L35) on terminator to mark process as idle.
+ - Use blocking [waitForTermination](https://github.com/daemontus/jafra/blob/master/src/main/kotlin/com/github/daemontus/jafra/Terminator.kt#L68) call to actually wait for termination. When this method returns, all processes are guaranteed to be idle (but some of them may be still waiting for this method to return).
  - After waitForTermination returns, the terminator is marked as finished and should not be used again. Create new terminator instead. This is mainly to prevent reuse related bugs in multi-round algorithms.
- 
+ - For testing, you can use a [shared memory token messenger](https://github.com/daemontus/jafra/blob/master/src/main/kotlin/com/github/daemontus/jafra/SharedMemoryMessenger.kt#L19) based on blocking queues
+
 ### Future work
  - provide a non blocking variant to waitForTermination, preferably using Observable pattern
  - privde a MPJ token messanger example
