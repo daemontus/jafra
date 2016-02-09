@@ -13,7 +13,7 @@ class RandomTest {
     @Test(timeout = 10000)
     fun t2() = test(2, 200, true)
 
-    @Test(timeout = 10000)
+    @Test(timeout = 20000)
     fun t3() = test(10, 200, true)
 
     @Test(timeout = 10000)

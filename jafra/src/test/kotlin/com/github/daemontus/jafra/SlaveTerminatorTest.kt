@@ -11,8 +11,7 @@ abstract class MockSlaveMessenger : TokenMessenger {
 
 class SlaveTerminatorTest {
 
-    @Test
-    public fun manyForwardsMessagesReceivedAfter() {
+    @Test fun manyForwardsMessagesReceivedAfter() {
         var flag = 0
         val messenger = object : MockSlaveMessenger() {
 
@@ -34,22 +33,19 @@ class SlaveTerminatorTest {
 
         }
         val terminator = Terminator.createNew(messenger)
-        Thread(object : Runnable {
-            override fun run() {
-                Thread.sleep(200)
-                terminator.messageReceived()
-                terminator.messageReceived()
-                terminator.setDone()
-                flag = 1
-            }
+        Thread(Runnable {
+            Thread.sleep(200)
+            terminator.messageReceived()
+            terminator.messageReceived()
+            terminator.setDone()
+            flag = 1
         }).start()
         terminator.setDone()
         terminator.waitForTermination()
     }
 
 
-    @Test
-    public fun manyForwardsMessagesSentAfter() {
+    @Test fun manyForwardsMessagesSentAfter() {
         var flag = 0
         val messenger = object : MockSlaveMessenger() {
 
@@ -77,20 +73,17 @@ class SlaveTerminatorTest {
 
         }
         val terminator = Terminator.createNew(messenger)
-        Thread(object : Runnable {
-            override fun run() {
-                Thread.sleep(200)
-                terminator.messageSent()
-                terminator.messageSent()
-                flag = 1
-                terminator.setDone()
-            }
+        Thread(Runnable {
+            Thread.sleep(200)
+            terminator.messageSent()
+            terminator.messageSent()
+            flag = 1
+            terminator.setDone()
         }).start()
         terminator.waitForTermination()
     }
 
-    @Test
-    public fun oneForwardMessagesSentAndReceivedBefore() {
+    @Test fun oneForwardMessagesSentAndReceivedBefore() {
         val messenger = object : MockSlaveMessenger() {
 
             var counter = 0
@@ -144,8 +137,7 @@ class SlaveTerminatorTest {
         terminator.waitForTermination()
     }
 
-    @Test
-    public fun oneForwardMessagesReceivedBefore() {
+    @Test fun oneForwardMessagesReceivedBefore() {
         val messenger = object : MockSlaveMessenger() {
 
             @Synchronized
@@ -187,8 +179,7 @@ class SlaveTerminatorTest {
         terminator.waitForTermination()
     }
 
-    @Test
-    public fun oneForwardMessagesSentBefore() {
+    @Test fun oneForwardMessagesSentBefore() {
         val messenger = object : MockSlaveMessenger() {
 
             @Synchronized
@@ -230,8 +221,7 @@ class SlaveTerminatorTest {
         terminator.waitForTermination()
     }
 
-    @Test
-    public fun oneForwardNoMessages() {
+    @Test fun oneForwardNoMessages() {
         val messenger = object : MockSlaveMessenger() {
 
             @Synchronized

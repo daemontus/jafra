@@ -12,7 +12,7 @@ data class Token(val flag: Int, val count: Int)
  * Also, communication should preserve order and be reliable.
  * (There is zero message loss tolerance)
  */
-public interface TokenMessenger {
+interface TokenMessenger {
 
     /**
      * Send token to closest higher process according to the process ordering.
@@ -20,7 +20,7 @@ public interface TokenMessenger {
      * the lowest process.
      * @param token Token to be sent to successor.
      */
-    public fun sendToNextAsync(token: Token)
+    fun sendToNextAsync(token: Token)
 
     /**
      * Block until token is received from closest lower process.
@@ -28,13 +28,13 @@ public interface TokenMessenger {
      * from the highest one.
      * @return Token received from predecessor.
      */
-    public fun receiveFromPrevious(): Token
+    fun receiveFromPrevious(): Token
 
     /**
      * Only one process should declare itself master.
      * @return True if this process should initiate termination detection.
      */
-    public fun isMaster(): Boolean
+    fun isMaster(): Boolean
 
 }
 
@@ -46,7 +46,7 @@ public interface TokenMessenger {
  *
  * This is suitable for usage with various MPI-like communication systems.
  */
-public abstract class IdTokenMessenger(val myId: Int, val processCount: Int) : TokenMessenger {
+abstract class IdTokenMessenger(val myId: Int, val processCount: Int) : TokenMessenger {
 
     private val successor: Int
     private val predecessor: Int

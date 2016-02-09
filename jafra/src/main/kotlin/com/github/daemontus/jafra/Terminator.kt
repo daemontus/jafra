@@ -18,7 +18,7 @@ package com.github.daemontus.jafra
  * Terminators are not reusable. Once [waitForTermination][.waitForTermination] returns,
  * terminator is marked as finished and should not be used again.
  */
-public abstract class Terminator
+abstract class Terminator
 /** package private constructor - new terminators should be created using static factory.  */
 constructor(protected val messenger: TokenMessenger) {
 
@@ -26,13 +26,13 @@ constructor(protected val messenger: TokenMessenger) {
     protected var count: Int = 0
 
     protected var finalized: Boolean = false
-    public var working: Boolean = true
+    var working: Boolean = true
         private set
 
     /**
      * Tell terminator that local work is done and he can resume operations. (i.e. after message has been received and processed)
      */
-    @Synchronized open public fun setDone() {
+    @Synchronized open fun setDone() {
         throwIfFinalized()
         throwIfNotWorking()
         working = false
@@ -41,7 +41,7 @@ constructor(protected val messenger: TokenMessenger) {
     /**
      * Indicate that message has been sent from this process.
      */
-    @Synchronized public fun messageSent() {
+    @Synchronized fun messageSent() {
         throwIfFinalized()
         throwIfNotWorking()
         count++
@@ -52,7 +52,7 @@ constructor(protected val messenger: TokenMessenger) {
      * WARNING: In order for terminator to properly finish, any sequence of
      * messageReceived calls must end with at least one setDone call.
      */
-    @Synchronized public fun messageReceived() {
+    @Synchronized fun messageReceived() {
         throwIfFinalized()
         count--
         //status = Black
@@ -65,7 +65,7 @@ constructor(protected val messenger: TokenMessenger) {
      * Terminator can receive messages even before this call and will preserve them as internal state,
      * but only after this call will it start to exchange info with other processes.
      */
-    public fun waitForTermination() {
+    fun waitForTermination() {
         throwIfFinalized()
         terminationLoop()
         finalized = true
@@ -87,7 +87,7 @@ constructor(protected val messenger: TokenMessenger) {
          * *
          * @return Usable terminator instance.
          */
-        public fun createNew(messenger: TokenMessenger): Terminator {
+        fun createNew(messenger: TokenMessenger): Terminator {
             if (messenger.isMaster()) {
                 return MasterTerminator(messenger)
             } else {
@@ -102,9 +102,9 @@ constructor(protected val messenger: TokenMessenger) {
      * (Great for multi-round algorithms, where each round uses
      * same messenger, but new terminator.)
      */
-    public class Factory(private val messenger: TokenMessenger) {
+    class Factory(private val messenger: TokenMessenger) {
 
-        public fun createNew(): Terminator {
+        fun createNew(): Terminator {
             return Terminator.createNew(messenger)
         }
     }

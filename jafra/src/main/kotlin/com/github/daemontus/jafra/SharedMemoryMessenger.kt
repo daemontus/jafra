@@ -16,7 +16,7 @@ class QueueTokenMessenger(
 
 }
 
-public fun createSharedMemoryTerminators(count: Int): List<Terminator.Factory> {
+fun createSharedMemoryTerminators(count: Int): List<Terminator.Factory> {
     val queues = (1..count).map { LinkedBlockingQueue<Token>() }
     return (0..(count-1)).map { QueueTokenMessenger(it, queues) }.map { Terminator.Factory(it) }
 }

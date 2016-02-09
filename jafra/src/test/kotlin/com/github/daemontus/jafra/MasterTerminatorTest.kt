@@ -47,25 +47,22 @@ class MasterTerminatorTest {
         terminator.messageSent()
         count++    //message created in system
         terminator.messageReceived()   //message received
-        Thread(object : Runnable {
-            override fun run() {
-                try {
-                    Thread.sleep(100)
-                    count--    //pair for first message Sent
-                    terminator.messageSent()
-                    terminator.setDone()
-                    Thread.sleep(100)
-                    count++ //message created in system
-                    terminator.messageReceived()   //message received
-                    Thread.sleep(100)
-                    count--    //pair for second message Sent
-                    Thread.sleep(100)
-                    flag = 0
-                    terminator.setDone()
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
-
+        Thread(Runnable {
+            try {
+                Thread.sleep(100)
+                count--    //pair for first message Sent
+                terminator.messageSent()
+                terminator.setDone()
+                Thread.sleep(100)
+                count++ //message created in system
+                terminator.messageReceived()   //message received
+                Thread.sleep(100)
+                count--    //pair for second message Sent
+                Thread.sleep(100)
+                flag = 0
+                terminator.setDone()
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
             }
         }).start()
         terminator.waitForTermination()
@@ -92,20 +89,17 @@ class MasterTerminatorTest {
 
         }
         val terminator = Terminator.createNew(comm)
-        Thread(object : Runnable {
-            override fun run() {
-                try {
-                    Thread.sleep(200)
-                    terminator.messageReceived()
-                    Thread.sleep(100)
-                    terminator.messageReceived()
-                    Thread.sleep(100)
-                    flag = 0
-                    terminator.setDone()
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
-
+        Thread(Runnable {
+            try {
+                Thread.sleep(200)
+                terminator.messageReceived()
+                Thread.sleep(100)
+                terminator.messageReceived()
+                Thread.sleep(100)
+                flag = 0
+                terminator.setDone()
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
             }
         }).start()
         terminator.waitForTermination()
