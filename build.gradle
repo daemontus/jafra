@@ -19,7 +19,7 @@ buildscript {
 
 group = "com.github.daemontus"
 archivesBaseName = "jafra"
-version = "1.0.7"
+version = "1.0.8"
 
 sourceCompatibility = 1.6
 
