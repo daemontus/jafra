@@ -166,6 +166,7 @@ private class MasterTerminator(m: TokenMessenger) : Terminator(m) {
 
     private var waitingForToken = false
 
+    @Synchronized
     private fun initProbe() {
         //status = White
         flag = 0
@@ -173,6 +174,7 @@ private class MasterTerminator(m: TokenMessenger) : Terminator(m) {
         messenger.sendToNextAsync(Token(0, 0))
     }
 
+    @Synchronized
     override fun setDone() {
         super.setDone()
         if (!waitingForToken) {
