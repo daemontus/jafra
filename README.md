@@ -2,7 +2,6 @@
 [![Build Status](https://travis-ci.org/daemontus/jafra.svg?branch=master)](https://travis-ci.org/daemontus/jafra)
 [![codecov.io](https://codecov.io/github/daemontus/jafra/coverage.svg?branch=master)](https://codecov.io/github/daemontus/jafra?branch=master)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](https://github.com/daemontus/jafra/blob/master/LICENSE.txt)
-[![Kotlin](https://img.shields.io/badge/kotlin-1.0.0--rc--1036-blue.svg)](http://kotlinlang.org)
 
 # Jafra
 Implementation of Safra's algorithm [[pdf]](http://fmt.cs.utwente.nl/courses/cdp/slides/cdp-8-mpi-2-4up.pdf) in reusable manner for efficient termination detection in distributed Java applications.
